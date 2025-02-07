@@ -1,9 +1,8 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
 
-
-public class MovementPlayer : MonoBehaviour
+public class MovementPlayer : NetworkBehaviour
 {
     Rigidbody2D rb;
     InputActionMap am1;
@@ -15,8 +14,20 @@ public class MovementPlayer : MonoBehaviour
         am1 = GetComponent<PlayerInput>().currentActionMap;
     }
 
-    private void Update()
+    public override void OnNetworkSpawn() 
     {
+        if (!IsOwner) 
+            return;
+        if (IsServer)
+        { 
+            transform.position = new Vector3(-transform.position.x, transform.position.y, 0);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (!IsOwner) 
+            return;
         rb.linearVelocity = am1.FindAction("Move").ReadValue<Vector2>() * movespeed;
     }
 

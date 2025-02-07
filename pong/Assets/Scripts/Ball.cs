@@ -1,16 +1,25 @@
-using UnityEditor.Callbacks;
 using UnityEngine;
+using Unity.Netcode;
 
-public class Ball : MonoBehaviour
+public class Ball : NetworkBehaviour
 {
     public float speed = 0f;
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public AudioSource collisionSound;
+
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        rb = GetComponent<Rigidbody2D>();
-        ResetPosition();
+        if (IsServer)
+        {
+            PlayOnClientRPC();
+        }
+    }
+
+    [ClientRpc]
+    public void PlayOnClientRPC() 
+    {
+        collisionSound.Play();
     }
 
     public void ResetPosition()
@@ -19,6 +28,12 @@ public class Ball : MonoBehaviour
         float x = Random.Range(0,2) == 0 ? -1 : 1;
         float y = Random.Range(0,2) == 0 ? -1 : 1;
         rb.linearVelocity = new Vector2(speed*x, speed*y);
+    }
+
+    public void Stop()
+    {
+        transform.position = Vector3.zero;
+        rb.linearVelocity = Vector2.zero;
     }
 
 }
