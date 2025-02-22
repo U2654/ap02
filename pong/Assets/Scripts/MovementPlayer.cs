@@ -30,5 +30,4 @@ public class MovementPlayer : NetworkBehaviour
             return;
         rb.linearVelocity = am1.FindAction("Move").ReadValue<Vector2>() * movespeed;
     }
-
 }

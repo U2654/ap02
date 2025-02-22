@@ -8,6 +8,12 @@ public class Ball : NetworkBehaviour
 
     public AudioSource collisionSound;
 
+    void Start()
+    {
+        speed = PlayerPrefs.GetFloat("BallSpeed");    
+        ResetPosition();
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (IsServer)
