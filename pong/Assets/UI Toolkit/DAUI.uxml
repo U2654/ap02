@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="ingame" style="font-size: 10px; align-content: flex-end; flex-direction: row-reverse; height: 26px; background-color: rgba(123, 123, 123, 0);">
+        <ui:Button text="Disconnect" name="logout-button" focusable="false" />
+    </ui:VisualElement>
+    <ui:VisualElement name="login" class="login-ui" style="top: 0; width: 311px; height: 182px; left: 30%; -unity-text-outline-color: rgba(0, 0, 0, 0); background-color: rgba(140, 140, 140, 0.39); background-size: 100% 100%; -unity-background-scale-mode: stretch-to-fill; min-width: auto; align-content: auto; bottom: 241px; right: auto; align-self: auto;">
+        <ui:Label text="Provide  a session and player name to connect" name="login-text" enable-rich-text="true" style="font-size: 12px; width: 350px; margin-bottom: 20px;" />
+        <ui:TextField label="Session Name" hide-placeholder-on-focus="false" emoji-fallback-support="false" name="session-name" style="font-size: 12px; width: 300px; align-items: stretch; flex-direction: row;" />
+        <ui:TextField label="Player Name" hide-placeholder-on-focus="false" emoji-fallback-support="false" name="player-name" style="font-size: 12px; width: 300px; align-items: center; justify-content: flex-start;" />
+        <ui:Button text="Connect" name="login-button" style="align-items: auto; height: 36px; width: 300px;" />
+    </ui:VisualElement>
+</ui:UXML>

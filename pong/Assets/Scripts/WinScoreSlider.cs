@@ -1,45 +1,46 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
 using TMPro;
-public class WinScoreSlider : NetworkBehaviour
+
+public class WinScoreSlider : MonoBehaviour
 {
     private Slider slider;
-
     public TextMeshProUGUI tmpro; 
 
-     private NetworkVariable<int> sliderValue = new(7);
- 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private SettingsManager settingsManager;
+
+    private bool isUpdatingSlider = false;
+
     void Start()
     {
         // set init value of player prefs to slider 
         slider = GetComponent<Slider>(); 
-        PlayerPrefs.SetInt("WinScore", (int) slider.value);       
-        PlayerPrefs.Save();
+        settingsManager = GameObject.Find("MenuCanvas").GetComponent<SettingsManager>();
 
-        sliderValue.OnValueChanged += UpdateSlider;
-        if (IsServer)
+        settingsManager.OnWinScoreValueChanged += UpdateSlider;
+    }
+
+    void OnDestroy()
+    {
+        // Unsubscribe from the event to avoid memory leaks
+        settingsManager.OnWinScoreValueChanged -= UpdateSlider;
+    }
+
+    public void OnSliderValueChanged(float newValue)
+    {
+        if (!isUpdatingSlider) 
         {
-            sliderValue.Value = (int) slider.value;
+            isUpdatingSlider = true;
+            settingsManager.SetWinScoreValueRpc((int) newValue);
         }
     }
 
-    public void OnSliderValueChanged(float value)
+    private void UpdateSlider(int newValue)
     {
-        PlayerPrefs.SetInt("WinScore", (int) value);
-        PlayerPrefs.Save();
-
-        if (IsServer)
-        {
-            sliderValue.Value = (int) slider.value;
-        }
+        isUpdatingSlider = true;
+        slider.value = newValue; 
+        tmpro.text = "WinScore " + slider.value.ToString();
+        isUpdatingSlider = false;
     }
-    private void UpdateSlider(int previous, int current)
-    {
-        slider.value = sliderValue.Value;  
-        tmpro.text = "Winning score " + slider.value.ToString();
-    }
-
 }

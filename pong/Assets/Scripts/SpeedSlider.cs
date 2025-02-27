@@ -2,40 +2,44 @@ using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
 using TMPro;
-public class SpeedSlider : NetworkBehaviour
+public class SpeedSlider : MonoBehaviour
 {
     private Slider slider;
     public TextMeshProUGUI tmpro; 
-     private NetworkVariable<float> sliderValue = new(1.0f);
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private SettingsManager settingsManager;
+
+    private bool isUpdatingSlider = false;
+
     void Start()
     {
         // set init value of player prefs to slider 
         slider = GetComponent<Slider>(); 
-        PlayerPrefs.SetFloat("BallSpeed", slider.value);       
-        PlayerPrefs.Save();
+        settingsManager = GameObject.Find("MenuCanvas").GetComponent<SettingsManager>();
 
-        sliderValue.OnValueChanged += UpdateSlider;
-        if (IsServer)
+        settingsManager.OnSpeedValueChanged += UpdateSlider;
+    }
+
+    void OnDestroy()
+    {
+        // Unsubscribe from the event to avoid memory leaks
+        settingsManager.OnSpeedValueChanged -= UpdateSlider;
+    }
+
+    public void OnSliderValueChanged(float newValue)
+    {
+        if (!isUpdatingSlider) 
         {
-            sliderValue.Value = slider.value;
+            isUpdatingSlider = true;
+            settingsManager.SetSpeedValueRpc(newValue);
         }
     }
 
-    public void OnSliderValueChanged(float value)
+    private void UpdateSlider(float newValue)
     {
-        PlayerPrefs.SetFloat("BallSpeed", value);
-        PlayerPrefs.Save();
-        if (IsServer)
-        {
-            sliderValue.Value = slider.value;
-        }
-    }
-
-    private void UpdateSlider(float previous, float current)
-    {
-        slider.value = sliderValue.Value;  
+        isUpdatingSlider = true;
+        slider.value = newValue; 
         tmpro.text = "Ball speed " + slider.value.ToString();
+        isUpdatingSlider = false;
     }
 }

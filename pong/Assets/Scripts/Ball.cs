@@ -10,19 +10,21 @@ public class Ball : NetworkBehaviour
 
     void Start()
     {
+        Debug.Log("MK: --------------------- ball " + GetComponent<NetworkObject>().NetworkObjectId);
+        // get speed from prefs
         speed = PlayerPrefs.GetFloat("BallSpeed");    
         ResetPosition();
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (IsServer)
+        if (HasAuthority)
         {
             PlayOnClientRPC();
         }
     }
 
-    [ClientRpc]
+    [Rpc(SendTo.Everyone)]
     public void PlayOnClientRPC() 
     {
         collisionSound.Play();

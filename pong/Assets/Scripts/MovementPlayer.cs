@@ -10,15 +10,14 @@ public class MovementPlayer : NetworkBehaviour
 
     private void Start() 
     {
+        Debug.Log("MK: --------------------- player " + GetComponent<NetworkObject>().NetworkObjectId);
         rb = GetComponent<Rigidbody2D>();
         am1 = GetComponent<PlayerInput>().currentActionMap;
     }
 
     public override void OnNetworkSpawn() 
     {
-        if (!IsOwner) 
-            return;
-        if (IsServer)
+        if (IsSessionOwner)
         { 
             transform.position = new Vector3(-transform.position.x, transform.position.y, 0);
         }
@@ -26,8 +25,9 @@ public class MovementPlayer : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if (!IsOwner) 
+        if (!HasAuthority) 
             return;
         rb.linearVelocity = am1.FindAction("Move").ReadValue<Vector2>() * movespeed;
     }
+
 }

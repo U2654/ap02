@@ -2,10 +2,7 @@ using TMPro;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using System;
-using Unity.Android.Gradle;
-using UnityEngine.UIElements;
 
 public class GameManager : NetworkBehaviour
 {
@@ -28,22 +25,19 @@ public class GameManager : NetworkBehaviour
 
     public override void OnNetworkSpawn() 
     {
-        if (IsServer)
+        Debug.Log("MK: --------------------- networkmngt " + GetComponent<NetworkObject>().NetworkObjectId);
+        if (IsSessionOwner)
         {
+            Debug.Log("MK: --------------------- try network ball spawn");
             ball = Instantiate(ballPrefab);
             ball.GetComponent<NetworkObject>().Spawn();
         }
         winScore =  PlayerPrefs.GetInt("WinScore");  
+        Debug.Log("MK: --------------------- win score is " + winScore);
 
         scoreRight.OnValueChanged += UpdateScore;
         scoreLeft.OnValueChanged += UpdateScore;
-        NetworkManager.Singleton.OnClientDisconnectCallback += OnDisconnected;
     }
-
-    private void OnDisconnected(ulong clientId)
-    {
-        RestartGame();
-    }    
 
     private void UpdateScore(int previous, int current)
     {
@@ -55,7 +49,7 @@ public class GameManager : NetworkBehaviour
 
     public void PlayerRightScored() 
     {
-        if (IsServer)
+        if (IsSessionOwner)
         {
             ball.GetComponent<Ball>().ResetPosition();
             scoreRight.Value++;
@@ -64,7 +58,7 @@ public class GameManager : NetworkBehaviour
 
     public void PlayerLeftScored() 
     {
-        if (IsServer)
+        if (IsSessionOwner)
         {
             ball.GetComponent<Ball>().ResetPosition();
             scoreLeft.Value++;
@@ -89,26 +83,10 @@ public class GameManager : NetworkBehaviour
         {
             winnerText.text = winnerString; 
             winnerPanel.SetActive(true);
-            if (IsServer)
+            if (HasAuthority)
             {
                 ball.GetComponent<Ball>().Stop();
             }
         }
     }
-
-    public void QuitGame()
-    {
-         #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-        #else
-        Application.Quit();
-        #endif        
-    }
-
-    public void RestartGame()
-    {
-        NetworkManager.Singleton.Shutdown();
-        SceneManager.LoadScene("MenuScene");
-    }
-
 }
