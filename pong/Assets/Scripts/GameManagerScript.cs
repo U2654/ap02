@@ -21,7 +21,7 @@ public class GameManagerScript : MonoBehaviour
         scoreboard.GetComponent<ScoreboardScript>().DisplayScore(leftScore, rightScore);
         scoreboard.GetComponent<ScoreboardScript>().DisplayText("");
         newGameButton.SetActive(false);
-        ball.GetComponent<Ball>().ResetPosition();
+        ball.GetComponent<BallScript>().ResetPosition();
     }
 
 
@@ -36,7 +36,7 @@ public class GameManagerScript : MonoBehaviour
         }
         else 
         {
-            ball.GetComponent<Ball>().ResetPosition();        
+            ball.GetComponent<BallScript>().ResetPosition();        
         }
     }
 
@@ -51,7 +51,7 @@ public class GameManagerScript : MonoBehaviour
         }
         else 
         {
-            ball.GetComponent<Ball>().ResetPosition();        
+            ball.GetComponent<BallScript>().ResetPosition();        
         }
     }
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LeftTrigger : MonoBehaviour
+public class LeftWallScript : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other) 
     {

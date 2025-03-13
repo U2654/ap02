@@ -1,7 +1,7 @@
 using UnityEditor.Callbacks;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class BallScript : MonoBehaviour
 {
     public float speed = 0f;
     Rigidbody2D rb;
