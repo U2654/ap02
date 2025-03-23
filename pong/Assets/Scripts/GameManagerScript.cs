@@ -9,10 +9,16 @@ public class GameManagerScript : MonoBehaviour
 
     public GameObject newGameButton;
 
-    private int leftScore;
-    private int rightScore;
+    private int leftScore = 0;
+    private int rightScore = 0;
 
     private const int maxScore = 5;
+
+    public void Start() 
+    {
+        ball.GetComponent<BallScript>().ballSubject.Attach(leftPaddle.GetComponent<PaddleScript>().paddleObserver);
+        ball.GetComponent<BallScript>().ballSubject.Attach(rightPaddle.GetComponent<PaddleScript>().paddleObserver);
+    }
 
     public void NewGame() 
     {

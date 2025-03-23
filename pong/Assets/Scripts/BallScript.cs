@@ -1,8 +1,9 @@
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class BallScript : MonoBehaviour
 {
+    public BallSubject ballSubject = new BallSubject();
+
     public float speed = 0f;
     Rigidbody2D rb;
 
@@ -21,4 +22,16 @@ public class BallScript : MonoBehaviour
         rb.linearVelocity = new Vector2(speed*x, speed*y);
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        ballSubject.Notify();
+    }
 }
+
+public class BallSubject : ObserverPattern.Subject
+{
+    // could provide something specific
+}
+
+
+
