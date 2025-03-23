@@ -15,9 +15,9 @@ public class GameManagerScript : MonoBehaviour
     private const int maxScore = 5;
 
     public void Start() 
-    {
-        ball.GetComponent<BallScript>().ballSubject.Attach(leftPaddle.GetComponent<PaddleScript>().paddleObserver);
-        ball.GetComponent<BallScript>().ballSubject.Attach(rightPaddle.GetComponent<PaddleScript>().paddleObserver);
+    {   // add observers to the ball's event
+        ball.GetComponent<BallScript>().CollisionEvent += leftPaddle.GetComponent<PaddleScript>().ChangeColor;
+        ball.GetComponent<BallScript>().CollisionEvent += rightPaddle.GetComponent<PaddleScript>().ChangeColor;
     }
 
     public void NewGame() 

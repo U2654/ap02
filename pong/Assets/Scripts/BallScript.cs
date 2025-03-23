@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class BallScript : MonoBehaviour
 {
-    public BallSubject ballSubject = new BallSubject();
 
+    public delegate void Notify(); // define a delegate type
+
+    public event Notify CollisionEvent; // define an event of the delegate type
     public float speed = 0f;
     Rigidbody2D rb;
 
@@ -24,14 +26,7 @@ public class BallScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        ballSubject.Notify();
+        CollisionEvent?.Invoke(); // notify all subscribers
     }
 }
-
-public class BallSubject : ObserverPattern.Subject
-{
-    // could provide something specific
-}
-
-
 
