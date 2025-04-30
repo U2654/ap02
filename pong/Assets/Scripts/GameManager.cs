@@ -25,15 +25,12 @@ public class GameManager : NetworkBehaviour
 
     public override void OnNetworkSpawn() 
     {
-        Debug.Log("MK: --------------------- networkmngt " + GetComponent<NetworkObject>().NetworkObjectId);
         if (IsSessionOwner)
         {
-            Debug.Log("MK: --------------------- try network ball spawn");
             ball = Instantiate(ballPrefab);
             ball.GetComponent<NetworkObject>().Spawn();
         }
-        winScore =  PlayerPrefs.GetInt("WinScore");  
-        Debug.Log("MK: --------------------- win score is " + winScore);
+        winScore =  3;//PlayerPrefs.GetInt("WinScore");  
 
         scoreRight.OnValueChanged += UpdateScore;
         scoreLeft.OnValueChanged += UpdateScore;
@@ -86,6 +83,7 @@ public class GameManager : NetworkBehaviour
             if (HasAuthority)
             {
                 ball.GetComponent<Ball>().Stop();
+                ball.GetComponent<NetworkObject>().Despawn();
             }
         }
     }

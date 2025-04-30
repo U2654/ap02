@@ -10,9 +10,8 @@ public class Ball : NetworkBehaviour
 
     void Start()
     {
-        Debug.Log("MK: --------------------- ball " + GetComponent<NetworkObject>().NetworkObjectId);
         // get speed from prefs
-        speed = PlayerPrefs.GetFloat("BallSpeed");    
+        speed = 3.0f;//PlayerPrefs.GetFloat("BallSpeed");    
         ResetPosition();
     }
 

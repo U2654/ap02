@@ -10,7 +10,6 @@ public class MovementPlayer : NetworkBehaviour
 
     private void Start() 
     {
-        Debug.Log("MK: --------------------- player " + GetComponent<NetworkObject>().NetworkObjectId);
         rb = GetComponent<Rigidbody2D>();
         am1 = GetComponent<PlayerInput>().currentActionMap;
     }

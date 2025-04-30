@@ -885,11 +885,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 7f164818-189b-478b-9cb5-895d7c2a4447
+  cloudProjectId: e4471064-95eb-4a2c-8532-ec1ed83ea365
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: Pong
-  organizationId: mattdk
+  organizationId: xr_lab_sdu
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
